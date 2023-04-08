@@ -8,30 +8,38 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 const app = express();
 
+let posts = [];
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get("/", function(req, res) {
-  res.render("home", {startingContent: homeStartingContent}); 
+  res.render("home", {startingContent: homeStartingContent, newPosts: posts}); 
   // key is variable being passed from ejs, value is variable in this JS file
+  
 });
 
+app.get("/about", function(req, res) {
+  res.render("about", {aboutSection: aboutContent});
+});
 
+app.get("/contact", function(req,res) {
+  res.render("contact", {contactSection: contactContent});
+});
 
+app.get("/compose", function(req,res) {
+  res.render("compose", {});
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
+app.post("/compose", function(req,res) {
+  const newPost = {
+    title: req.body.postTitle,
+    post: req.body.postBody
+  };
+  posts.push(newPost);
+  res.redirect("/");
+});
 
 
 
